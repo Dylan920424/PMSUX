@@ -89,8 +89,8 @@ function Chat() {
 
   return (
     <div>
-        <Panel />
         <ChatBox />
+        <Panel />
     </div>
   );
 }
