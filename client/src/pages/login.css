@@ -13,11 +13,12 @@
   color: #f8f7f4;
 }
 
-
 .container {
   align-self: center;
   display: flex;
   flex-direction: row;
+  position: relative;
+  top: -10px;
 }
 .circle {
   margin: 6px;
@@ -31,6 +32,8 @@
   color: #f8f7f4;
   font-family: 'Ubuntu', bold;
   font-size: 36px;
+  position: relative;
+  top: -10px;
 }
 
 .login_button {
@@ -49,11 +52,11 @@
   transition-duration: 0.4s;
   align-self: center;
   position: relative;
-  top: 24px;
+  top: 14px;
+  
 }
 
 .login_button:hover {
   background-color: #f8f7f4;
   color: #A084CE;
 }
-
