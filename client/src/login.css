@@ -14,6 +14,18 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
+
+.container {
+  display: flex;
+  flex-direction: row;
+}
+
+.circle{
+  margin: 6px;
+  width: 10px;
+  height: 10px;
+  background-color: #4b415a;
+}
 .welcome_text {
   color: #f8f7f4;
   font-family: 'Ubuntu', bold;
@@ -45,8 +57,8 @@
 }
 
 .circle {
-  width: 100px;
-  height: 100px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  background-color: red;
+  background-color: #4B415A;
 }

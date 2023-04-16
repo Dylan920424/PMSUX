@@ -1,7 +1,6 @@
 import logo from './logo.svg';
 import './login.css';
 
-
 function App() {
   return (
     <div className="App">
@@ -11,24 +10,17 @@ function App() {
         </h2>
         <img src={logo} className="App-logo" alt="logo" />
         
-        <div className="circle"></div>
-
-        <h1>
-          Login
-        </h1>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React fu!
-        </a>
+        <div className="container">
+          <div className="circle"></div>
+          <div className="circle"></div>
+          <div className="circle"></div>
+        </div>
+        <button>
+          Login with Canvas
+        </button>
       </header>
     </div>
   );
 }
-
-
 
 export default App;
