@@ -3,7 +3,7 @@
 const express = require('express');
 const fs = require('fs');
 const app = express();
-const port = 3000;
+const port = 3001;
 
 
 app.get('/api/data', (req, res) => {
@@ -67,7 +67,8 @@ async function loadCourses() {
   var response = [];
 
   for (let i =0; i<activeCourseIds.length; i++) {
-    response.push({id: activeCourseIds[i], title: activeCourseCode[i], description: activeCourseNames[i]});
+    var description = activeCourseNames[i].slice(activeCourseNames[i].indexOf(activeCourseCode[i])+activeCourseCode[i].length);
+    response.push({id: activeCourseIds[i], title: activeCourseCode[i], description: description});
   }
 
   return response;
@@ -190,4 +191,4 @@ async function test() {
   console.log(await chat(messages, "give me a brief description of the projects avaible in this course"));
 }
 
-test()
+// test()

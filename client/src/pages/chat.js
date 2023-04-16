@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './chat.css';
 import signout from './signout.svg';
 import send from './send.svg';
@@ -56,14 +56,40 @@ function Card(props) {
 
 function Class(props) {
   const [activeCard, setActiveCard] = useState(null);
+  const [cardsData, setCardsData] = useState([]);
 
-  const cardsData = [
-    { id: 1, title: 'COMM_ST 352', description: 'Social Network Analysis' },
-    { id: 2, title: 'EARTH 202', description: 'Earth Science Revealed' },
-    { id: 3, title: 'ECON 201', description: 'Intro to Macroeconomics' },
-    { id: 4, title: 'COMP_SCI 213', description: 'Intro to Computer Systems' },
-    { id: 5, title: 'Card 5', description: 'This is the description for Card 4.' }
-  ];
+  useEffect(() => {
+    const onLoad = () => {
+      fetch('/loadUser', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({})
+      })
+      .then(response => response.json())
+      .then(data => {
+        // Handle the response data here
+        // console.log(data.course);
+        // const courses = data.course;
+        setCardsData(data.course);
+      })
+      .catch(error => {
+        console.error(error);
+        // Handle any errors here
+      });
+    }
+    onLoad()
+}, [])
+
+  // const cardsData = [
+  //   { id: 1, title: 'COMM_ST 352', description: 'Social Network Analysis' },
+  //   { id: 2, title: 'EARTH 202', description: 'Earth Science Revealed' },
+  //   { id: 3, title: 'ECON 201', description: 'Intro to Macroeconomics' },
+  //   { id: 4, title: 'COMP_SCI 213', description: 'Intro to Computer Systems' },
+  //   { id: 5, title: 'Card 5', description: 'This is the description for Card 4.' }
+  // ];
+
 
   const handleCardClick = (cardId) => {
     setActiveCard(cardId === activeCard ? null : cardId);
