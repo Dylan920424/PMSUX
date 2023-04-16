@@ -35,14 +35,15 @@ function Card(props) {
   const clickable = props.activeCard === null || props.activeCard === props.id;
   const handleClick = () => {
     if (clickable) {
-      setColor(color === 'white' ? 'yellow' : 'white');
+      setColor(color === '' ? '#544964' : '');
       props.onClick(props.id);
     }
+    
   };
   return (
-    <div className="card" style={{ backgroundColor: color }} 
+    <div className="card">
+      <div className="card-header" style={{ backgroundColor: color }} 
                           onClick={handleClick}>
-      <div className="card-header">
         <h3 className="card-title">{props.title}</h3>
         <h4 className="card-description">{props.description}</h4>
         <p className="card-id">{props.id}</p>

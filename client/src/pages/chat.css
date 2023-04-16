@@ -71,6 +71,10 @@ body {
     padding: 8px;
   }
 
+  .card-id {
+    opacity: 0;
+  }
+
 .input-wrapper {
     display: flex;
     align-items: center;
