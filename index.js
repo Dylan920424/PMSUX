@@ -3,8 +3,10 @@ const fs = require('fs');
 const app = express();
 const port = 3000;
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static(__dirname + '/public'));
+app.get('/api/data', (req, res) => {
+  const data = { message: 'Hello from the server!' };
+  res.json(data);
+});
 
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);
@@ -45,8 +47,9 @@ async function loadCourses() {
   });
 
   const activeCourseIds = activeCourses.map(course => course.id);
+  const activeCourseNames = activeCourses.map(course => course.name);
 
-  return activeCourseIds;
+  return (activeCourseIds, activeCourseNames);
 }
 
 async function load(course_id) {
@@ -66,18 +69,14 @@ async function load(course_id) {
   // console.log(messages);
 
   const modules = await canvasAPI.getModules(course_id);
-  // console.log(modules);
 
   const files = await canvasAPI.getFilesByCourse(course_id);
-  // console.log(files);
-
   messages.push({role: "user", content: "and the following are the course contents"})
 
   for (let i = 0; i < files.length; i++) {
     if (files[i].mime_class == "pdf" || files[i].mime_class == "txt") {
       await canvasAPI.downloadFile(files[i].id, './tempFiles/');
       const pdf_path = './tempFiles/'+files[i].filename;
-            // Read the PDF file using fs.readFileSync
       const data = fs.readFileSync(pdf_path);
 
       pdf(data).then(function(data) {
@@ -107,22 +106,13 @@ async function chat(messages, message) {
   return await generateResponse(messages);
 }
 
-async function main(){
-  active = await loadCourses();
-  console.log(active);
-  messages = await load(active[5]);
-  console.log(messages);
-  response = await chat(messages, "I missed lecture 7 and 8, what should content should I cover before the next lecture?");
-  console.log(response);
-}
-
 app.post('/askQuestion', (req, res) => {
   const question = req.body.question;
   const Messages = req.body.context;
   console.log(question)
   chat(Messages, question)
     .then(response => {
-      res.send({ messages: Messages, answer: response});
+      res.send({ messages: Messages.push({role: "user", content: question}, {role: "assistant", content: response}), answer: response});
       console.log(response)
     })
     .catch(error => {
@@ -148,7 +138,7 @@ app.post('/loadBot', (req, res) => {
 app.post('/loadUser', (req, res) => {
   loadCourses()
     .then(response => {
-      res.send({ courses: response});
+      res.send({ courses: response[0], names: response[1]});
       console.log(courses)
     })
     .catch(error => {
@@ -157,4 +147,12 @@ app.post('/loadUser', (req, res) => {
     });
 });
 
-main()
+// async function main(){
+//   active = await loadCourses();
+//   console.log(active);
+//   messages = await load(active[5]);
+//   console.log(messages);
+//   response = await chat(messages, "I missed lecture 7 and 8, what should content should I cover before the next lecture?");
+//   console.log(response);
+// }
+// main()
