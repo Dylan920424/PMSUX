@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './chat.css';
 import signout from './signout.svg';
 import send from './send.svg';
@@ -85,17 +85,39 @@ function Class(props) {
 
 
 function InitialMSG() {
-  return(
-    <div className="big_cont">
-      <div className="circ_cont">
-          <div className="circle"></div>
-          <div className="circle"></div>
-          <div className="circle"></div>
-      </div>
-    <div className="sum_text">
-    Choose one of your courses on the left and ask away!
-    </div>
-    </div>
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    function handleKeyDown(event) {
+      if (event.key === 'Escape') {
+        setIsVisible(false);
+      } else if (event.key === 'Enter') {
+        setIsVisible(false);
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
+  return (
+    <>
+      {isVisible && (
+        <div className="big_cont">
+          <div className="circ_cont">
+            <div className="circle"></div>
+            <div className="circle"></div>
+            <div className="circle"></div>
+          </div>
+          <div className="sum_text">
+            Choose one of your courses on the left and ask away!
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
@@ -154,7 +176,7 @@ function TextMessageResponse({ message, fromUser }) {
 };
 
 function Chat() {
-
+  
   return (
     <div>
         <InitialMSG />
