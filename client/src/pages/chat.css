@@ -11,7 +11,7 @@ body {
 
   .rectangle-pane {
     width: 300px;
-    height:96vh;
+    height:100%;
     background-color: #332F36;
     padding: 20px;
     position: absolute;
@@ -23,7 +23,7 @@ body {
     font-size: 20px;
     font-family: 'Ubuntu', Bold;
     color: #fbf7f4c0;
-    text-align: center;
+    text-align: left;
     padding: 10px;
   }
   
@@ -40,8 +40,13 @@ body {
   .card-header:hover{
     background-color: #272429;
     border-radius: 12px;
-    border: 3px solid #453D53;
+    border: 3px solid #544964;
   }
+  
+  .bg-disabled {
+    background: gray;
+  }
+
   .card-title {
     margin-top: 20px;
     font-size: 18px;
@@ -73,8 +78,8 @@ body {
     border-radius: 12px;
     width: 941px;
     height: 70px;
-    position: relative;
-    top: 640px;
+    position: absolute;
+    bottom: 4%;
     left: 28%;
 }
 
@@ -92,14 +97,10 @@ input[type="text"] {
 .send{
   width: 50px;
   height: 50px;
-  cursor: pointer;
   margin-right: 20px;
   margin-top: 20px;
 }
 
-.send:hover{
-  transform: scale(1.05);
-}
 button[type="submit"] {
   background-color: transparent;
   border: none;
@@ -167,4 +168,32 @@ button[type="submit"] {
   height: 10px;
   border-radius: 50%;
   background-color: #4B415A;
+}
+
+.message-list {
+  color: #f8f7f4;
+  font-family: 'Open Sans';
+  overflow-wrap: break-word;
+  font-size: 18px;
+  position: relative;
+  text-align: left;
+  line-height: 32px;
+}
+
+.user_bubble {
+  align-items: center;
+  display: inline-block;
+  background-color: #453D53;
+  border-radius: 12px;
+  width: fit-content;
+  max-width: 800px;
+  height: fit-content;
+  padding-left: 24px;
+  padding-right: 24px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  position: absolute;
+  top: 10%;
+  right: 10%;
+
 }

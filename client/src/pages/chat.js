@@ -31,8 +31,17 @@ function Panel() {
 }
 
 function Card(props) {
+  const [color, setColor] = useState('');
+  const clickable = props.activeCard === null || props.activeCard === props.id;
+  const handleClick = () => {
+    if (clickable) {
+      setColor(color === 'white' ? 'yellow' : 'white');
+      props.onClick(props.id);
+    }
+  };
   return (
-    <div className="card">
+    <div className="card" style={{ backgroundColor: color }} 
+                          onClick={handleClick}>
       <div className="card-header">
         <h3 className="card-title">{props.title}</h3>
         <h4 className="card-description">{props.description}</h4>
@@ -46,22 +55,33 @@ function Card(props) {
 }
 
 function Class(props) {
+  const [activeCard, setActiveCard] = useState(null);
+
   const cardsData = [
-    { id: 2, title: 'COMM_ST 352', description: 'Social Network Analysis' },
+    { id: 1, title: 'COMM_ST 352', description: 'Social Network Analysis' },
     { id: 2, title: 'EARTH 202', description: 'Earth Science Revealed' },
-    { id: 2, title: 'ECON 201', description: 'Intro to Macroeconomics' },
+    { id: 3, title: 'ECON 201', description: 'Intro to Macroeconomics' },
     { id: 4, title: 'COMP_SCI 213', description: 'Intro to Computer Systems' },
-    { id: 5, title: 'Card 4', description: 'This is the description for Card 4.' }
+    { id: 5, title: 'Card 5', description: 'This is the description for Card 4.' }
   ];
 
+  const handleCardClick = (cardId) => {
+    setActiveCard(cardId === activeCard ? null : cardId);
+  };
   return (
     <div className="card-list">
       {cardsData.map(card => (
-        <Card key={card.id} title={card.title} description={card.description} />
+        <Card key={card.id} 
+              title={card.title} 
+              description={card.description} 
+              id={card.id} 
+              activeCard={activeCard} 
+              onClick={handleCardClick}/>
       ))}
     </div>
   );
 }
+
 
 function InitialMSG() {
   return(
@@ -77,6 +97,7 @@ function InitialMSG() {
     </div>
   );
 }
+
 
 function ChatBox() {
   const [inputValue, setInputValue] = useState('');
@@ -101,8 +122,13 @@ function ChatBox() {
     <div className="chat-box">
       <div className="message-list">
         {messages.map((message, index) => (
+          <div className = "user_msg">
+          <div className = "user_bubble">
           <TextMessageResponse key={index} message={message} fromUser={true} />
-        ))}
+          </div>
+          </div>
+          ))}
+      
     </div>
     <form onSubmit={handleSubmit}>
       <div className="input-wrapper">

@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bootstrap": "^5.2.3",
     "canvas-api": "^3.6.0",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
@@ -21,6 +22,7 @@
     "pdf-to-text": "^0.0.7",
     "pdf.js-extract": "^0.2.1",
     "pdfjs-dist": "^3.5.141",
+    "react-bootstrap": "^2.7.4",
     "react-router-dom": "^6.10.0"
   }
 }
