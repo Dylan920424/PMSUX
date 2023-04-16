@@ -13,7 +13,13 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "fs": "^0.0.1-security",
+    "html-to-text": "^9.0.5",
     "node-canvas-api": "^1.7.3",
-    "openai": "^3.2.1"
+    "openai": "^3.2.1",
+    "pdf-parse": "^1.1.1",
+    "pdf-text-extract": "^1.5.0",
+    "pdf-to-text": "^0.0.7",
+    "pdf.js-extract": "^0.2.1",
+    "pdfjs-dist": "^3.5.141"
   }
 }
