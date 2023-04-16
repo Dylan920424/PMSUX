@@ -4,3 +4,34 @@
 .query {
     width: 100%;
   }
+
+  
+  .card-header {
+    width: 280px;
+    height: 100px;
+    background-color: #A084CE;
+    border-radius: 12px; /* border round of 12px */
+    overflow: hidden; /* prevent child element overflow */
+    
+  }
+  .card-title {
+    margin-top: 20px;
+    font-size: 18px;
+    font-family: 'Ubuntu';
+    font-weight: bold;
+    color: #FBF7F4;
+    text-align: left;
+    margin-left: 40px;
+  }
+  .card-description {
+    margin: 0;
+    font-size: 14px;
+    font-family: 'Open Sans';
+    font-weight: Semi-Bold;
+    color: #FBF7F4;
+    text-align: left;
+    margin-left: 40px;
+  }
+  .card-body {
+    padding: 8px;
+  }
