@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './login.css';
 
+
 function App() {
   return (
     <div className="App">
@@ -15,9 +16,7 @@ function App() {
           <div className="circle"></div>
           <div className="circle"></div>
         </div>
-        <button>
-          Login with Canvas
-        </button>
+        <button>Login with canvas</button>
       </header>
     </div>
   );
