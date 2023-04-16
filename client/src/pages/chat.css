@@ -1,0 +1,35 @@
+@import url("https://fonts.googleapis.com/css?family=Ubuntu");
+@import url("https://fonts.googleapis.com/css?family=Open+Sans");
+
+.Chat {
+  text-align: center;
+}
+
+.Chat-header {
+    background-color: #272429;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: #f8f7f4;
+  }  
+
+.container {
+  display: flex;
+  flex-direction: row;
+}
+.circle {
+  margin: 6px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #4B415A;
+}
+
+.welcome_text {
+  color: #f8f7f4;
+  font-family: 'Ubuntu', bold;
+  font-size: 36px;
+}
