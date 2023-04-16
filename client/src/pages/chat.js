@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import './chat.css';
+import signout from './signout.svg';
 
 function Input() {
   return (
@@ -8,6 +9,28 @@ function Input() {
       <form 
         className="query">
       </form>
+    </div>
+  )
+}
+
+
+function Panel() {
+  const navigate = useNavigate();
+  return (
+    <div className="rectangle-pane">
+        <div>
+    <h1 className = "your_courses">
+          Your Courses
+        </h1>
+        </div>
+      <div className="App">
+      <Class title="" description="" id="">
+        </Class>
+      </div>
+      <div className="leave_lol">
+        <div className="sign_out">Sign out</div>
+        <img src={signout} alt="Icon" className="icon" onClick={() => {navigate("/");}} />
+        </div>
     </div>
   )
 }
@@ -29,39 +52,28 @@ function Card(props) {
 
 function Class(props) {
   const cardsData = [
-    { id: 2, title: 'Card 1', description: 'This is the description for Card 1.' },
-    { id: 2, title: 'Card 2', description: 'This is the description for Card 2.' },
-    { id: 2, title: 'Card 3', description: 'This is the description for Card 3.' },
-    { id: 4, title: 'Card 4', description: 'This is the description for Card 4.' },
+    { id: 2, title: 'COMM_ST 352', description: 'Social Network Analysis' },
+    { id: 2, title: 'EARTH 202', description: 'Earth Science Revealed' },
+    { id: 2, title: 'ECON 201', description: 'Intro to Macroeconomics' },
+    { id: 4, title: 'COMP_SCI 213', description: 'Intro to Computer Systems' },
     { id: 5, title: 'Card 4', description: 'This is the description for Card 4.' }
   ];
 
   return (
     <div className="card-list">
       {cardsData.map(card => (
-        <Card key={card.id} title={card.title} description={card.description} id={card.id} />
+        <Card key={card.id} title={card.title} description={card.description} />
       ))}
     </div>
   );
 }
 
 function Chat() {
-  const navigate = useNavigate();
 
   return (
     <div>
       <Input />
-      <button
-        onClick={() => {
-          navigate("/");
-        }}
-      >
-        Sign out
-      </button>
-      <div className="App">
-      <Class title="" description="" id="">
-        </Class>
-      </div>
+      <Panel />
     </div>
   );
 }

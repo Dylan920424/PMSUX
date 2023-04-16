@@ -1,15 +1,36 @@
 @import url("https://fonts.googleapis.com/css?family=Ubuntu");
 @import url("https://fonts.googleapis.com/css?family=Open+Sans");
 
+body {
+  background-color: #272429;
+}
+
 .query {
     width: 100%;
   }
 
+  .rectangle-pane {
+    width: fit-content;
+    height:100vh;
+    background-color: #332F36;
+    padding: 20px;
+    position: absolute;
+    top: 0;
+    left:  0;
+  }
+
+  .your_courses {
+    font-size: 20px;
+    font-family: 'Ubuntu', Bold;
+    color: #fbf7f4c0;
+    text-align: center;
+    padding: 10px;
+  }
   
   .card-header {
     width: 280px;
     height: 100px;
-    background-color: #A084CE;
+    background-color: #272429;
     border-radius: 12px; /* border round of 12px */
     overflow: hidden; /* prevent child element overflow */
     
@@ -19,19 +40,43 @@
     font-size: 18px;
     font-family: 'Ubuntu';
     font-weight: bold;
-    color: #FBF7F4;
+    color: #fbf7f4ca;
     text-align: left;
     margin-left: 40px;
+    margin-bottom: 10px;
   }
   .card-description {
     margin: 0;
     font-size: 14px;
     font-family: 'Open Sans';
     font-weight: Semi-Bold;
-    color: #FBF7F4;
+    color: #fbf7f4ba;
     text-align: left;
     margin-left: 40px;
+    margin-right: 20px;
   }
   .card-body {
     padding: 8px;
+  }
+
+  .leave_lol {
+    align-self: center;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    top: 10px;
+  }
+  .signout {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+  }
+  .sign_out {
+    font-size: 18px;
+    font-family: 'Open Sans';
+    font-weight: bold;
+    color: #fbf7f4;
+    text-align: center;
+    padding: 10px;
+    margin: 10px;
   }
