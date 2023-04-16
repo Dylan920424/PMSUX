@@ -121,6 +121,20 @@ function InitialMSG() {
   );
 }
 
+function MessageList({ messages }) {
+  return (
+    <div className="message-list">
+      {messages.map((message, index) => (
+        <div className={!message.fromUser ? "system-msg" : "user-msg"} key={index}>
+          <div className={message.fromUser ? "user_bubble" : "system_bubble"}>
+            <TextMessageResponse message={message.message} fromUser={message.fromUser} />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 
 function ChatBox() {
   const [inputValue, setInputValue] = useState('');
@@ -133,37 +147,44 @@ function ChatBox() {
   const handleSubmit = event => {
     event.preventDefault();
     console.log(`User entered: ${inputValue}`);
-    setInputValue('');
     const newMessage = inputValue.trim();
-    if (newMessage) { // add a condition to prevent empty messages
+    if (newMessage) {
       setInputValue('');
-      setMessages([...messages, newMessage]);
+      const userMessage = { message: newMessage, fromUser: true };
+      const responseMessage = generateResponseMessage(newMessage);
+      setMessages([...messages, userMessage, responseMessage]);
     }
   };
 
+  const generateResponseMessage = (message) => {
+    let responseMessage = '';
+    if (message.includes('hello')) {
+      responseMessage = 'Hi there!';
+    } else if (message.includes('how are you')) {
+      responseMessage = 'I am doing well, thanks!';
+    } else if (message.includes('help')) {
+      responseMessage = 'Sure, how can I help you?';
+    } else {
+      responseMessage = 'I did not understand your message. Please try again.';
+    }
+    return { message: responseMessage, fromUser: false };
+  };  
+
   return (
     <div className="chat-box">
-      <div className="message-list">
-        {messages.map((message, index) => (
-          <div className = "user_msg">
-          <div className = "user_bubble">
-          <TextMessageResponse key={index} message={message} fromUser={true} />
+      <MessageList messages={messages} />
+      <form onSubmit={handleSubmit}>
+        <div className="input-wrapper">
+          <input type="text" value={inputValue} onChange={handleInputChange} placeholder="Type your question here!" />
+          <div className="send">
+            <img src={send} alt="Icon" className="icon"/>
           </div>
-          </div>
-          ))}
-      
-    </div>
-    <form onSubmit={handleSubmit}>
-      <div className="input-wrapper">
-        <input type="text" value={inputValue} onChange={handleInputChange} placeholder="Type your question here!" />
-        <div className="send">
-        <img src={send} alt="Icon" className="icon"/>
         </div>
-      </div>
-    </form>
+      </form>
     </div>
   );
 }
+
 
 function TextMessageResponse({ message, fromUser }) {
   const messageClass = fromUser ? 'sent' : 'received';

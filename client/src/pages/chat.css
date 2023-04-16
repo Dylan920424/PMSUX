@@ -180,27 +180,67 @@ button[type="submit"] {
 .message-list {
   color: #f8f7f4;
   font-family: 'Open Sans';
-  overflow-wrap: break-word;
   font-size: 18px;
-  position: relative;
   text-align: left;
   line-height: 32px;
+  max-height: 700px;
+  overflow-y: scroll;
+}
+
+.user-msg {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+  overflow-wrap: break-word;
 }
 
 .user_bubble {
   align-items: center;
   display: inline-block;
   background-color: #453D53;
-  border-radius: 12px;
+  border-radius: 20px 20px 0px 20px;
   width: fit-content;
   max-width: 800px;
   height: fit-content;
   padding-left: 24px;
   padding-right: 24px;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  position: absolute;
-  top: 20px;
-  right: 10%;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  margin-right: 40px;
+}
 
+.system-msg {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 20px;
+  overflow-wrap: break-word;
+}
+
+.system_bubble {
+  align-items: center;
+  display: inline-block;
+  background-color: #332F36;
+  border-radius: 20px 20px 20px 0px;
+  width: fit-content;
+  max-width: 800px;
+  height: fit-content;
+  padding-left: 24px;
+  padding-right: 24px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  margin-left: 360px;
+}
+
+.message {
+  position: relative;
+}
+
+.sent {
+  align-self: flex-end;
+  margin-right: 10px;
+}
+
+.received {
+  align-self: flex-start;
+  margin-left: 10px;
 }
