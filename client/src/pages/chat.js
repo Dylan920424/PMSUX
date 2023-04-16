@@ -5,15 +5,7 @@ import { FaPaperPlane } from 'react-icons/fa';
 import './chat.css';
 import signout from './signout.svg';
 
-function Input() {
-  return (
-    <div>
-      <form 
-        className="query">
-      </form>
-    </div>
-  )
-}
+
 
 
 function Panel() {
@@ -97,22 +89,8 @@ function Chat() {
 
   return (
     <div>
-      <Input />
-<<<<<<< HEAD
-      <button
-        onClick={() => {
-          navigate("/");
-        }}
-      >
-        Sign out
-      </button>
-      <div className="App">
-        <Class />
+        <Panel />
         <ChatBox />
-      </div>
-=======
-      <Panel />
->>>>>>> 2cf21354d68883ed052fa21ee246594d9f4851e1
     </div>
   );
 }
