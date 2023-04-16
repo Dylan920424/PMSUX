@@ -1,0 +1,68 @@
+@import url("https://fonts.googleapis.com/css?family=Ubuntu");
+@import url("https://fonts.googleapis.com/css?family=Open+Sans");
+
+.Login {
+  text-align: center;
+}
+
+.Login-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .Login-logo {
+    animation: Login-logo-spin infinite 20s linear;
+  }
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+}
+.circle {
+  margin: 6px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #4B415A;
+}
+
+.welcome_text {
+  color: #f8f7f4;
+  font-family: 'Ubuntu', bold;
+  font-size: 36px;
+}
+
+.App-header {
+  background-color: #272429;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: #f8f7f4;
+}
+
+.login_button {
+  background-color: #A084CE; /* Green */
+  border-radius: 12px;
+  border: none;
+  text-decoration: none;
+  color: #4B415A;
+  padding: 16px 32px;
+  text-align: center;
+  font-family: "Open Sans";
+  font-weight: bolder;
+  font-size: 18px;
+  display: inline-block;
+  cursor: pointer;
+  transition-duration: 0.4s;
+}
+
+.login_button:hover {
+  background-color: #f8f7f4;
+  color: #A084CE;
+}
+
