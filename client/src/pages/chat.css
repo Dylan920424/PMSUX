@@ -1,15 +1,36 @@
 @import url("https://fonts.googleapis.com/css?family=Ubuntu");
 @import url("https://fonts.googleapis.com/css?family=Open+Sans");
 
+body {
+  background-color: #272429;
+}
+
 .query {
     width: 100%;
   }
 
+  .rectangle-pane {
+    width: fit-content;
+    height:100vh;
+    background-color: #332F36;
+    padding: 20px;
+    position: absolute;
+    top: 0;
+    left:  0;
+  }
+
+  .your_courses {
+    font-size: 20px;
+    font-family: 'Ubuntu', Bold;
+    color: #fbf7f4c0;
+    text-align: center;
+    padding: 10px;
+  }
   
   .card-header {
     width: 280px;
     height: 100px;
-    background-color: #A084CE;
+    background-color: #272429;
     border-radius: 12px; /* border round of 12px */
     overflow: hidden; /* prevent child element overflow */
     
@@ -19,60 +40,21 @@
     font-size: 18px;
     font-family: 'Ubuntu';
     font-weight: bold;
-    color: #FBF7F4;
+    color: #fbf7f4ca;
     text-align: left;
     margin-left: 40px;
+    margin-bottom: 10px;
   }
   .card-description {
     margin: 0;
     font-size: 14px;
     font-family: 'Open Sans';
     font-weight: Semi-Bold;
-    color: #FBF7F4;
+    color: #fbf7f4ba;
     text-align: left;
     margin-left: 40px;
+    margin-right: 20px;
   }
   .card-body {
     padding: 8px;
   }
-
-  .input-wrapper {
-    display: flex;
-    align-items: center;
-    background-color: #332F36;
-    border-radius: 12px;
-    width: 941px;
-    height: 70px;
-  }
-  
-  .icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 18px;
-    height: 18px;
-    margin-right: 10px;
-  }
-  
-  input[type="text"] {
-    flex: 1;
-    background-color: transparent;
-    border: none;
-    color: #FBF7F4;
-    font-size: 18px;
-    font-family: 'Open Sans';
-    outline: none;
-    margin-left: 36px;
-  }
-
-  button[type="submit"] {
-    background-color: transparent;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    width: 18px;
-    height: 18px;
-    margin-right: 36px;
-    color: #FBF7F4;
-  }
-  
