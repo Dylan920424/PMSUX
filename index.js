@@ -79,7 +79,6 @@ async function load(course_ids) {
   var contexts = {}
   for (let i = 0; i<1; i++) {
     course_id = course_ids[i];
-    console.log(course_id)
     messages = [{ role: "system", content: `You are a peer mentor that would help students with questions` }];
 
     const syllabus = await canvasAPI.getSyllabusOfCourse(course_id);
@@ -157,7 +156,7 @@ app.post('/askQuestion', (req, res) => {
   console.log(question)
   chat(Messages, question)
     .then(response => {
-      res.send({ messages: Messages.push({role: "user", content: question}, {role: "assistant", content: response}), answer: response});
+      res.send({answer: response});
       console.log(response)
     })
     .catch(error => {

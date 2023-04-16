@@ -134,48 +134,46 @@ function MessageList({ messages }) {
 function ChatBox(props) {
   const [inputValue, setInputValue] = useState('');
   const [messages, setMessages] = useState([]);
-  const {contexts, course_id, setContexts} = props;
+  const [answer, setAnswer] = useState('');
+  const {contexts, course_id} = props;
 
   const handleInputChange = event => {
     setInputValue(event.target.value);
   };
 
-  const handleSubmit = event => {
+  const handleSubmit = async event => {
     event.preventDefault();
     console.log(`User entered: ${inputValue}`);
     const newMessage = inputValue.trim();
     if (newMessage) {
       setInputValue('');
       const userMessage = { message: newMessage, fromUser: true };
-      const responseMessage = generateResponseMessage(newMessage);
-      generateRespone(newMessage);
-      setMessages([...messages, userMessage, responseMessage]);
+      const answer = await generateResponse(newMessage);
+      console.log(answer);
+      setMessages([...messages, userMessage, answer]);
+      console.log(messages);
     }
   };
-
-  const generateRespone = (message) => {
+  
+  const generateResponse = async (message) => {
     console.log(contexts);
     console.log(course_id);
     console.log(contexts[course_id]);
-    fetch('/askQuestion', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({context: contexts[course_id], question: message})
-    })
-    .then(response => response.json())
-    .then(data => {
-      setMessages(messages.push(data.answer));
-      var temp = contexts;
-      temp[course_id] = data.messages;
-      setContexts(temp);
-    })
-    .catch(error => {
+    try {
+      const response = await fetch('/askQuestion', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({context: contexts[course_id], question: message})
+      });
+      const data = await response.json();
+      return { message: data.answer, fromUser: false };
+    } catch (error) {
       console.error(error);
       // Handle any errors here
-    });
-  }
+    }
+  };
 
   return (
     <div className="chat-box">
