@@ -37,6 +37,17 @@ async function generateResponse(messages) {
   return response.data.choices[0].message.content;
 }
 
+async function summarize(words, text) {
+  const response = await openai.createChatCompletion({
+    model: "gpt-3.5-turbo",
+    messages: [{ role: "system", content: `You are a reader that summarizes texts precisely and concisely` },
+               { role: "user", content: "please summarize this text in " + words.toString() + " words: \n" + text}],
+    max_tokens: Math.round(words/5),
+  });
+
+  return response.data.choices[0].message.content;
+}
+
 async function loadCourses() {
   user = await canvasAPI.getSelf();
   id = user.id;
@@ -51,17 +62,26 @@ async function loadCourses() {
 
   const activeCourseIds = activeCourses.map(course => course.id);
   const activeCourseNames = activeCourses.map(course => course.name);
+  const activeCourseCode = activeCourses.map(course => course.course_code);
 
-  return (activeCourseIds, activeCourseNames);
+  var response = [];
+
+  for (let i =0; i<activeCourseIds.length; i++) {
+    response.push({id: activeCourseIds[i], title: activeCourseCode[i], description: activeCourseNames[i]});
+  }
+
+  return response;
 }
 
 async function load(course_id) {
-  messages = [{ role: "system", content: `You are a peer mentor that would help students with questions` }]
+  messages = [{ role: "system", content: `You are a peer mentor that would help students with questions` }];
 
   const syllabus = await canvasAPI.getSyllabusOfCourse(course_id);
   const syllabusText = convert(syllabus.syllabus, {});
-  const syllabusInput = "For context, this is the syllabus of the course: \n" + syllabusText;
-  messages.push({role: "user", content: syllabusInput});
+  if (syllabusText.length > 5) {
+    const syllabusInput = "For context, this is the syllabus of the course: \n" + syllabusText;
+    messages.push({role: "user", content: syllabusInput});
+  }
 
   assignments = await canvasAPI.getAssignments(course_id);
   const assignmentDescriptions = assignments.map(asmt => (asmt.name).concat("\n", convert(asmt.description)));
@@ -73,20 +93,32 @@ async function load(course_id) {
 
   const modules = await canvasAPI.getModules(course_id);
 
-  const files = await canvasAPI.getFilesByCourse(course_id);
-  messages.push({role: "user", content: "and the following are the course contents"})
+  try {
+    const files = await canvasAPI.getFilesByCourse(course_id);
+    const len = files.length;
+    messages.push({role: "user", content: "and the following are the course contents"})
 
-  for (let i = 0; i < files.length; i++) {
-    if (files[i].mime_class == "pdf" || files[i].mime_class == "txt") {
-      await canvasAPI.downloadFile(files[i].id, './tempFiles/');
-      const pdf_path = './tempFiles/'+files[i].filename;
-      const data = fs.readFileSync(pdf_path);
+    for (let i = 0; i < len; i++) {
+      if (files[i].mime_class == "pdf" || files[i].mime_class == "txt") {
+        await canvasAPI.downloadFile(files[i].id, './tempFiles/');
+        const pdf_path = './tempFiles/'+files[i].filename;
+        const data = fs.readFileSync(pdf_path);
 
-      pdf(data).then(function(data) {
-        const string = data.text.replace(/[^\x00-\x7F]/g, "").split('\n').filter(line => line.split(" ").length > 3).join('\n').slice(0,Math.round(10000/files.length));
-        messages.push({ role: 'user', content: string });
-      });
-    }
+        // pdf(data).then(function(data) {
+        //   const string = data.text.replace(/[^\x00-\x7F]/g, "").split('\n').filter(line => line.split(" ").length > 3).join('\n').slice(0,Math.round(10000/files.length));
+        //   messages.push({ role: 'user', content: string });
+        // });
+
+        await (async (data, messages, len) => {
+          const read = await pdf(data);
+          const string = await summarize(Math.round(10000/len), read.text.replace(/[^\x00-\x7F]/g, "").split('\n').filter(line => line.split(" ").length > 3).join('\n').slice(0,4000*4.5));
+          // const string = data.text.replace(/[^\x00-\x7F]/g, "").split('\n').filter(line => line.split(" ").length > 3).join('\n').slice(0,Math.round(10000/files.length));
+          messages.push({ role: 'user', content: string });
+        })(data, messages, len);
+      }
+    } 
+  } catch (e) {
+
   }
 
   const directory = "./tempFiles/";
@@ -141,7 +173,7 @@ app.post('/loadBot', (req, res) => {
 app.post('/loadUser', (req, res) => {
   loadCourses()
     .then(response => {
-      res.send({ courses: response[0], names: response[1]});
+      res.send({ course: response});
       console.log(courses)
     })
     .catch(error => {
@@ -150,4 +182,12 @@ app.post('/loadUser', (req, res) => {
     });
 });
 
-main()
+async function test() {
+  courses = await loadCourses();
+  console.log(courses);
+  messages = await load(courses[1]['id']);
+  console.log(messages);
+  console.log(await chat(messages, "give me a brief description of the projects avaible in this course"));
+}
+
+test()
