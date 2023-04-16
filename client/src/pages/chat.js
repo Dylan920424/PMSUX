@@ -59,7 +59,7 @@ function Chat() {
         Sign out
       </button>
       <div className="App">
-        <Class title="COMM_ST 352" description="Social Network Analysis" id="12345">
+      <Class title="" description="" id="">
         </Class>
       </div>
     </div>
