@@ -5,7 +5,8 @@ import './chat.css';
 import signout from './signout.svg';
 import send from './send.svg';
 
-function Panel() {
+function Panel(props) {
+  const {cardsData, setCourse} = props;
   const navigate = useNavigate();
   return (
     <div className="rectangle-pane">
@@ -15,7 +16,7 @@ function Panel() {
         </h1>
       </div>
       <div className="App">
-        <Class title="" description="" id="">
+        <Class cardsData={cardsData} setCourse={setCourse}>
         </Class>
       </div>
       <div className="leave_lol">
@@ -57,43 +58,11 @@ function Card(props) {
 
 function Class(props) {
   const [activeCard, setActiveCard] = useState(null);
-  const [cardsData, setCardsData] = useState([]);
-
-  useEffect(() => {
-    const onLoad = () => {
-      fetch('/loadUser', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({})
-      })
-      .then(response => response.json())
-      .then(data => {
-        // Handle the response data here
-        // console.log(data.course);
-        // const courses = data.course;
-        setCardsData(data.course);
-      })
-      .catch(error => {
-        console.error(error);
-        // Handle any errors here
-      });
-    }
-    onLoad()
-}, [])
-
-  // const cardsData = [
-  //   { id: 1, title: 'COMM_ST 352', description: 'Social Network Analysis' },
-  //   { id: 2, title: 'EARTH 202', description: 'Earth Science Revealed' },
-  //   { id: 3, title: 'ECON 201', description: 'Intro to Macroeconomics' },
-  //   { id: 4, title: 'COMP_SCI 213', description: 'Intro to Computer Systems' },
-  //   { id: 5, title: 'Card 5', description: 'This is the description for Card 4.' }
-  // ];
-
+  const {cardsData, setCourse} = props;
 
   const handleCardClick = (cardId) => {
     setActiveCard(cardId === activeCard ? null : cardId);
+    setCourse(cardId);
   };
   return (
     <div className="card-list">
@@ -126,9 +95,10 @@ function InitialMSG() {
 }
 
 
-function ChatBox() {
+function ChatBox(props) {
   const [inputValue, setInputValue] = useState('');
   const [messages, setMessages] = useState([]);
+  const {contexts, course_id, setContexts} = props;
 
   const handleInputChange = event => {
     setInputValue(event.target.value);
@@ -141,9 +111,34 @@ function ChatBox() {
     const newMessage = inputValue.trim();
     if (newMessage) { // add a condition to prevent empty messages
       setInputValue('');
+      generateRespone(newMessage);
       setMessages([...messages, newMessage]);
     }
   };
+
+  const generateRespone = (message) => {
+    console.log(contexts);
+    console.log(course_id);
+    console.log(contexts[course_id]);
+    fetch('/askQuestion', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({context: contexts[course_id], question: message})
+    })
+    .then(response => response.json())
+    .then(data => {
+      setMessages(messages.push(data.answer));
+      var temp = contexts;
+      temp[course_id] = data.messages;
+      setContexts(temp);
+    })
+    .catch(error => {
+      console.error(error);
+      // Handle any errors here
+    });
+  }
 
   return (
     <div className="chat-box">
@@ -180,12 +175,50 @@ function TextMessageResponse({ message, fromUser }) {
 };
 
 function Chat() {
+  const [cardsData, setCardsData] = useState([]);
+  const [contexts, setContexts] = useState([]);
+  const [course, setCourse] = useState(0);
+
+  const onLoad = async () => {
+    try {
+      const response1 = await fetch('/loadUser', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({})
+      });
+      const data1 = await response1.json();
+      setCardsData(data1.course);
+  
+      const courseIds = data1.course.map(cardData => cardData.id);
+      console.log(courseIds)
+
+      const response2 = await fetch('/loadBot', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ course_ids: courseIds })
+      });
+      const data2 = await response2.json();
+      setContexts(data2.context);
+      console.log(contexts);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    onLoad();
+  }, []);
+  
 
   return (
     <div>
         <InitialMSG />
-        <ChatBox />
-        <Panel />
+        <ChatBox contexts={contexts} course_id={course} setContexts={setContexts}/>
+        <Panel cardsData={cardsData} setCourse={setCourse}/>
     </div>
   );
 }

@@ -5,6 +5,7 @@ const fs = require('fs');
 const app = express();
 const port = 3001;
 
+app.use(express.json());
 
 app.get('/api/data', (req, res) => {
   const data = { message: 'Hello from the server!' };
@@ -74,67 +75,75 @@ async function loadCourses() {
   return response;
 }
 
-async function load(course_id) {
-  messages = [{ role: "system", content: `You are a peer mentor that would help students with questions` }];
+async function load(course_ids) {
+  var contexts = {}
+  for (let i = 0; i<1; i++) {
+    course_id = course_ids[i];
+    console.log(course_id)
+    messages = [{ role: "system", content: `You are a peer mentor that would help students with questions` }];
 
-  const syllabus = await canvasAPI.getSyllabusOfCourse(course_id);
-  const syllabusText = convert(syllabus.syllabus, {});
-  if (syllabusText.length > 5) {
-    const syllabusInput = "For context, this is the syllabus of the course: \n" + syllabusText;
-    messages.push({role: "user", content: syllabusInput});
-  }
-
-  assignments = await canvasAPI.getAssignments(course_id);
-  const assignmentDescriptions = assignments.map(asmt => (asmt.name).concat("\n", convert(asmt.description)));
-  // messages.push({role: "user", content: "The following messages are some of the assignments for this course"});
-  // for (let i = 0; i < assignmentDescriptions.length; i++) {
-  //   messages.push({role: "user", content: assignmentDescriptions[i]});
-  // }
-  // console.log(messages);
-
-  const modules = await canvasAPI.getModules(course_id);
-
-  try {
-    const files = await canvasAPI.getFilesByCourse(course_id);
-    const len = files.length;
-    messages.push({role: "user", content: "and the following are the course contents"})
-
-    for (let i = 0; i < len; i++) {
-      if (files[i].mime_class == "pdf" || files[i].mime_class == "txt") {
-        await canvasAPI.downloadFile(files[i].id, './tempFiles/');
-        const pdf_path = './tempFiles/'+files[i].filename;
-        const data = fs.readFileSync(pdf_path);
-
-        // pdf(data).then(function(data) {
-        //   const string = data.text.replace(/[^\x00-\x7F]/g, "").split('\n').filter(line => line.split(" ").length > 3).join('\n').slice(0,Math.round(10000/files.length));
-        //   messages.push({ role: 'user', content: string });
-        // });
-
-        await (async (data, messages, len) => {
-          const read = await pdf(data);
-          const string = await summarize(Math.round(10000/len), read.text.replace(/[^\x00-\x7F]/g, "").split('\n').filter(line => line.split(" ").length > 3).join('\n').slice(0,4000*4.5));
-          // const string = data.text.replace(/[^\x00-\x7F]/g, "").split('\n').filter(line => line.split(" ").length > 3).join('\n').slice(0,Math.round(10000/files.length));
-          messages.push({ role: 'user', content: string });
-        })(data, messages, len);
-      }
-    } 
-  } catch (e) {
-
-  }
-
-  const directory = "./tempFiles/";
-
-  fs.readdir(directory, (err, files) => {
-    if (err) throw err;
-
-    for (const file of files) {
-      fs.unlink(path.join(directory, file), (err) => {
-        if (err) throw err;
-      });
+    const syllabus = await canvasAPI.getSyllabusOfCourse(course_id);
+    const syllabusText = convert(syllabus.syllabus, {});
+    if (syllabusText.length > 5) {
+      const syllabusInput = "For context, this is the syllabus of the course: \n" + syllabusText;
+      messages.push({role: "user", content: syllabusInput});
     }
-  });
 
-  return messages;
+    assignments = await canvasAPI.getAssignments(course_id);
+    const assignmentDescriptions = assignments.map(asmt => (asmt.name).concat("\n", convert(asmt.description)));
+    // messages.push({role: "user", content: "The following messages are some of the assignments for this course"});
+    // for (let i = 0; i < assignmentDescriptions.length; i++) {
+    //   messages.push({role: "user", content: assignmentDescriptions[i]});
+    // }
+    // console.log(messages);
+
+    const modules = await canvasAPI.getModules(course_id);
+
+    try {
+      const files = await canvasAPI.getFilesByCourse(course_id);
+      const len = files.length;
+      messages.push({role: "user", content: "and the following are the course contents"})
+
+      for (let i = 0; i < len; i++) {
+        if (files[i].mime_class == "pdf" || files[i].mime_class == "txt") {
+          await canvasAPI.downloadFile(files[i].id, './tempFiles/');
+          const pdf_path = './tempFiles/'+files[i].filename;
+          const data = fs.readFileSync(pdf_path);
+
+          // pdf(data).then(function(data) {
+          //   const string = data.text.replace(/[^\x00-\x7F]/g, "").split('\n').filter(line => line.split(" ").length > 3).join('\n').slice(0,Math.round(10000/files.length));
+          //   messages.push({ role: 'user', content: string });
+          // });
+
+          await (async (data, messages, len) => {
+            const read = await pdf(data);
+            const readText = read.text.replace(/[^\x00-\x7F]/g, "").split('\n').filter(line => line.split(" ").length > 3).join('\n').slice(0,4000*4.5);
+            if (readText.length > 100){
+              const string = await summarize(Math.round(10000/len), readText);
+              messages.push({ role: 'user', content: string });
+            }
+            // const string = data.text.replace(/[^\x00-\x7F]/g, "").split('\n').filter(line => line.split(" ").length > 3).join('\n').slice(0,Math.round(10000/files.length));
+          })(data, messages, len);
+        }
+      } 
+    } catch (e) {
+
+    }
+
+    const directory = "./tempFiles/";
+
+    fs.readdir(directory, (err, files) => {
+      if (err) throw err;
+
+      for (const file of files) {
+        fs.unlink(path.join(directory, file), (err) => {
+          if (err) throw err;
+        });
+      }
+    });
+    contexts[course_id] = messages;
+  }
+  return contexts;
 }
 
 async function chat(messages, message) {
@@ -158,12 +167,11 @@ app.post('/askQuestion', (req, res) => {
 });
 
 app.post('/loadBot', (req, res) => {
-  const course = req.body.course_id;
-  console.log(course)
-  load(course)
+  const course_ids = req.body.course_ids;
+  load(course_ids)
     .then(response => {
       res.send({ context: response});
-      console.log(context)
+      console.log(response);
     })
     .catch(error => {
       console.error(error);
