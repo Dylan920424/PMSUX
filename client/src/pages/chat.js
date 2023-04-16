@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import './chat.css';
 import signout from './signout.svg';
 import send from './send.svg';
@@ -80,16 +80,52 @@ function Class(props) {
 
 
 function InitialMSG() {
-  return(
-    <div className="big_cont">
-      <div className="circ_cont">
-          <div className="circle"></div>
-          <div className="circle"></div>
-          <div className="circle"></div>
-      </div>
-    <div className="sum_text">
-    Choose one of your courses on the left and ask away!
-    </div>
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    function handleKeyDown(event) {
+      if (event.key === 'Escape') {
+        setIsVisible(false);
+      } else if (event.key === 'Enter') {
+        setIsVisible(false);
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
+  return (
+    <>
+      {isVisible && (
+        <div className="big_cont">
+          <div className="circ_cont">
+            <div className="circle"></div>
+            <div className="circle"></div>
+            <div className="circle"></div>
+          </div>
+          <div className="sum_text">
+            Choose one of your courses on the left and ask away!
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+function MessageList({ messages }) {
+  return (
+    <div className="message-list">
+      {messages.map((message, index) => (
+        <div className={!message.fromUser ? "system-msg" : "user-msg"} key={index}>
+          <div className={message.fromUser ? "user_bubble" : "system_bubble"}>
+            <TextMessageResponse message={message.message} fromUser={message.fromUser} />
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
@@ -107,12 +143,13 @@ function ChatBox(props) {
   const handleSubmit = event => {
     event.preventDefault();
     console.log(`User entered: ${inputValue}`);
-    setInputValue('');
     const newMessage = inputValue.trim();
-    if (newMessage) { // add a condition to prevent empty messages
+    if (newMessage) {
       setInputValue('');
+      const userMessage = { message: newMessage, fromUser: true };
+      const responseMessage = generateResponseMessage(newMessage);
       generateRespone(newMessage);
-      setMessages([...messages, newMessage]);
+      setMessages([...messages, userMessage, responseMessage]);
     }
   };
 
@@ -142,27 +179,19 @@ function ChatBox(props) {
 
   return (
     <div className="chat-box">
-      <div className="message-list">
-        {messages.map((message, index) => (
-          <div className = "user_msg">
-          <div className = "user_bubble">
-          <TextMessageResponse key={index} message={message} fromUser={true} />
+      <MessageList messages={messages} />
+      <form onSubmit={handleSubmit}>
+        <div className="input-wrapper">
+          <input type="text" value={inputValue} onChange={handleInputChange} placeholder="Type your question here!" />
+          <div className="send">
+            <img src={send} alt="Icon" className="icon"/>
           </div>
-          </div>
-          ))}
-      
-    </div>
-    <form onSubmit={handleSubmit}>
-      <div className="input-wrapper">
-        <input type="text" value={inputValue} onChange={handleInputChange} placeholder="Type your question here!" />
-        <div className="send">
-        <img src={send} alt="Icon" className="icon"/>
         </div>
-      </div>
-    </form>
+      </form>
     </div>
   );
 }
+
 
 function TextMessageResponse({ message, fromUser }) {
   const messageClass = fromUser ? 'sent' : 'received';
