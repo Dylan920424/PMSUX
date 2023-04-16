@@ -10,8 +10,8 @@ body {
   }
 
   .rectangle-pane {
-    width: fit-content;
-    height:100vh;
+    width: 300px;
+    height:96vh;
     background-color: #332F36;
     padding: 20px;
     position: absolute;
@@ -33,7 +33,14 @@ body {
     background-color: #272429;
     border-radius: 12px; /* border round of 12px */
     overflow: hidden; /* prevent child element overflow */
-    
+    cursor: pointer;
+    transition: all 0.2s ease-in;
+  }
+
+  .card-header:hover{
+    background-color: #272429;
+    border-radius: 12px;
+    border: 3px solid #453D53;
   }
   .card-title {
     margin-top: 20px;
@@ -66,6 +73,9 @@ body {
     border-radius: 12px;
     width: 941px;
     height: 70px;
+    position: relative;
+    top: 640px;
+    left: 28%;
 }
 
 input[type="text"] {
@@ -79,6 +89,17 @@ input[type="text"] {
   margin-left: 36px;
 }
 
+.send{
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  margin-right: 20px;
+  margin-top: 20px;
+}
+
+.send:hover{
+  transform: scale(1.05);
+}
 button[type="submit"] {
   background-color: transparent;
   border: none;
@@ -90,10 +111,24 @@ button[type="submit"] {
   color: #FBF7F4;
 }
 
+.leave_lol {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  margin-left: 10px;
+  margin-top: 24px;
+}
+
 .signout {
   width: 50px;
   height: 50px;
+  margin-top: 22px;
   cursor: pointer;
+  transition: all 0.2s ease-in;
+}
+
+.signout:hover {
+  transform: scale(1.05);
 }
 
 .sign_out {
@@ -103,5 +138,33 @@ button[type="submit"] {
   color: #fbf7f4;
   text-align: center;
   padding: 10px;
-  margin: 10px;
+}
+
+.sum_text {
+  color: #f8f7f47c;
+  font-family: 'Open Sans';
+  font-size: 18px;
+  position: relative;
+}
+.big_cont {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  top: 300px;
+  left: 10%;
+}
+.circ_cont {
+  align-self: center;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  top: -10px;
+}
+.circle {
+  margin: 6px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #4B415A;
 }

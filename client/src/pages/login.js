@@ -12,13 +12,11 @@ function Login() {
           Welcome to Office Hours!
         </h2>
     </header>
-
     <div className="container">
           <div className="circle"></div>
           <div className="circle"></div>
           <div className="circle"></div>
         </div>
-
     <button className = "login_button" 
         onClick={() => {navigate("/chat");}}>
         Sign in with Canvas

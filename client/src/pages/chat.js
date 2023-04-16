@@ -1,30 +1,31 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useState } from 'react';
-import { FaPaperPlane } from 'react-icons/fa';
 import './chat.css';
 import signout from './signout.svg';
-
-
-
+import send from './send.svg';
 
 function Panel() {
   const navigate = useNavigate();
   return (
     <div className="rectangle-pane">
-        <div>
-    <h1 className = "your_courses">
+      <div>
+        <h1 className = "your_courses">
           Your Courses
         </h1>
-        </div>
+      </div>
       <div className="App">
-      <Class title="" description="" id="">
+        <Class title="" description="" id="">
         </Class>
       </div>
       <div className="leave_lol">
-        <div className="sign_out">Sign out</div>
-        <img src={signout} alt="Icon" className="icon" onClick={() => {navigate("/");}} />
+        <div className="sign_out">
+          Sign out
         </div>
+        <div className="signout">
+          <img src={signout} alt="Icon" className="icon" onClick={() => {navigate("/");}} />
+        </div>
+      </div>
     </div>
   )
 }
@@ -62,8 +63,24 @@ function Class(props) {
   );
 }
 
+function InitialMSG() {
+  return(
+    <div className="big_cont">
+      <div className="circ_cont">
+          <div className="circle"></div>
+          <div className="circle"></div>
+          <div className="circle"></div>
+      </div>
+    <div className="sum_text">
+    Choose one of your courses on the left and ask away!
+    </div>
+    </div>
+  );
+}
+
 function ChatBox() {
   const [inputValue, setInputValue] = useState('');
+  const [messages, setMessages] = useState([]);
 
   const handleInputChange = event => {
     setInputValue(event.target.value);
@@ -73,22 +90,47 @@ function ChatBox() {
     event.preventDefault();
     console.log(`User entered: ${inputValue}`);
     setInputValue('');
+    const newMessage = inputValue.trim();
+    if (newMessage) { // add a condition to prevent empty messages
+      setInputValue('');
+      setMessages([...messages, newMessage]);
+    }
   };
 
   return (
+    <div className="chat-box">
+      <div className="message-list">
+        {messages.map((message, index) => (
+          <TextMessageResponse key={index} message={message} fromUser={true} />
+        ))}
+    </div>
     <form onSubmit={handleSubmit}>
       <div className="input-wrapper">
         <input type="text" value={inputValue} onChange={handleInputChange} placeholder="Type your question here!" />
-        <button type="submit"><FaPaperPlane /></button>
+        <div className="send">
+        <img src={send} alt="Icon" className="icon"/>
+        </div>
       </div>
     </form>
+    </div>
   );
 }
+
+function TextMessageResponse({ message, fromUser }) {
+  const messageClass = fromUser ? 'sent' : 'received';
+
+  return (
+    <div className={`message ${messageClass}`}>
+      <p>{message}</p>
+    </div>
+  );
+};
 
 function Chat() {
 
   return (
     <div>
+        <InitialMSG />
         <ChatBox />
         <Panel />
     </div>
