@@ -1,10 +1,13 @@
+
+
 const express = require('express');
 const fs = require('fs');
 const app = express();
 const port = 3000;
 
+
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/client/src/'));
 
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);
@@ -157,4 +160,4 @@ app.post('/loadUser', (req, res) => {
     });
 });
 
-main()
+// main()
