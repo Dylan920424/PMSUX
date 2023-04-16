@@ -1,22 +1,21 @@
 @import url("https://fonts.googleapis.com/css?family=Ubuntu");
 @import url("https://fonts.googleapis.com/css?family=Open+Sans");
 
-.Chat {
+.Login {
   text-align: center;
+  background-color: #272429;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: #f8f7f4;
 }
 
-.Chat-header {
-    background-color: #272429;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: #f8f7f4;
-  }  
 
 .container {
+  align-self: center;
   display: flex;
   flex-direction: row;
 }
@@ -33,3 +32,28 @@
   font-family: 'Ubuntu', bold;
   font-size: 36px;
 }
+
+.login_button {
+  background-color: #A084CE; /* Green */
+  border-radius: 12px;
+  border: none;
+  text-decoration: none;
+  color: #4B415A;
+  padding: 16px 32px;
+  text-align: center;
+  font-family: "Open Sans";
+  font-weight: 1000;
+  font-size: 18px;
+  display: inline-block;
+  cursor: pointer;
+  transition-duration: 0.4s;
+  align-self: center;
+  position: relative;
+  top: 24px;
+}
+
+.login_button:hover {
+  background-color: #f8f7f4;
+  color: #A084CE;
+}
+

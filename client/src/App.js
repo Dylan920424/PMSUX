@@ -1,40 +1,20 @@
-import logo from './logo.svg';
-import './login.css';
-import Chat from './chat';
-import {Link} from  "react-router-dom";
-import  {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import './App.css';
+import  {BrowserRouter, Route, Routes} from 'react-router-dom';
+import Chat from './pages/chat';
+import Login from './pages/login';
 
-function Login() {
+function App() {
   return (
-    <div className="Login">
-      <header className="Login-header">
-
-        <h2 className='welcome_text'>
-          Welcome to Office Hours!
-        </h2>
-        
-        <img src={logo} className="Login-logo" alt="logo" />
-        
-        <div className="container">
-          <div className="circle"></div>
-          <div className="circle"></div>
-          <div className="circle"></div>
-        </div>
-
-        <button className = "login_button">
-          Sign in with Canvas
-          <Link to = "/chat"> go to chat </Link> 
-        </button>
-
-      </header>
-      <Router>
+    <div className="App">
+      <Login />
+      <BrowserRouter>
         <Routes>
-        <Route path = "/" element = {<Login />} />
-          <Route path = "/chat" element = {<Chat />} />
+          <Route path = "/" element = {<Login/>} />
+          <Route path = "/chat" element = {<Chat/>} />
         </Routes>
-      </Router>
+      </BrowserRouter>
     </div>
   );
 }
 
-export default Login;
+export default App;

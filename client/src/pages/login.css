@@ -3,20 +3,19 @@
 
 .Login {
   text-align: center;
+  background-color: #272429;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: #f8f7f4;
 }
 
-.Login-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .Login-logo {
-    animation: Login-logo-spin infinite 20s linear;
-  }
-}
 
 .container {
+  align-self: center;
   display: flex;
   flex-direction: row;
 }
@@ -34,17 +33,6 @@
   font-size: 36px;
 }
 
-.App-header {
-  background-color: #272429;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: #f8f7f4;
-}
-
 .login_button {
   background-color: #A084CE; /* Green */
   border-radius: 12px;
@@ -54,11 +42,14 @@
   padding: 16px 32px;
   text-align: center;
   font-family: "Open Sans";
-  font-weight: bolder;
+  font-weight: 1000;
   font-size: 18px;
   display: inline-block;
   cursor: pointer;
   transition-duration: 0.4s;
+  align-self: center;
+  position: relative;
+  top: 24px;
 }
 
 .login_button:hover {
