@@ -1,5 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useState } from 'react';
+import { FaPaperPlane } from 'react-icons/fa';
 import './chat.css';
 
 function Input() {
@@ -39,9 +41,32 @@ function Class(props) {
   return (
     <div className="card-list">
       {cardsData.map(card => (
-        <Card key={card.id} title={card.title} description={card.description} id={card.id} />
+        <Card key={card.id} title={card.title} description={card.description} />
       ))}
     </div>
+  );
+}
+
+function ChatBox() {
+  const [inputValue, setInputValue] = useState('');
+
+  const handleInputChange = event => {
+    setInputValue(event.target.value);
+  };
+
+  const handleSubmit = event => {
+    event.preventDefault();
+    console.log(`User entered: ${inputValue}`);
+    setInputValue('');
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <div className="input-wrapper">
+        <input type="text" value={inputValue} onChange={handleInputChange} placeholder="Type your question here!" />
+        <button type="submit"><FaPaperPlane /></button>
+      </div>
+    </form>
   );
 }
 
@@ -59,8 +84,8 @@ function Chat() {
         Sign out
       </button>
       <div className="App">
-      <Class title="" description="" id="">
-        </Class>
+        <Class />
+        <ChatBox />
       </div>
     </div>
   );

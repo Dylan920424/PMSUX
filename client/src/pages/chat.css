@@ -35,3 +35,44 @@
   .card-body {
     padding: 8px;
   }
+
+  .input-wrapper {
+    display: flex;
+    align-items: center;
+    background-color: #332F36;
+    border-radius: 12px;
+    width: 941px;
+    height: 70px;
+  }
+  
+  .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+  }
+  
+  input[type="text"] {
+    flex: 1;
+    background-color: transparent;
+    border: none;
+    color: #FBF7F4;
+    font-size: 18px;
+    font-family: 'Open Sans';
+    outline: none;
+    margin-left: 36px;
+  }
+
+  button[type="submit"] {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+    margin-right: 36px;
+    color: #FBF7F4;
+  }
+  
